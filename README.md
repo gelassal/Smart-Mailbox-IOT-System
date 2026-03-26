@@ -100,7 +100,18 @@ If detected:
 - Uses cooldown to prevent spam  
 
 ---
+## Communication Flow
+Frontend (React)
+        ↓ HTTP
+Raspberry Pi 4 (Flask Backend)
+        ↓ UART
+TM4C123 Microcontroller
+        ↓
+Servo Lock + Sensors
 
+Raspberry Pi 5 (Detection)
+        ↓
+Email Alerts
 
 ---
 
@@ -184,6 +195,13 @@ If detected:
 
 ## Repository Structure
 
+smart-mailbox/
+├── frontend/
+├── tm4c_firmware/
+├── pi_server/
+├── pi_detection/
+├── docs/
+└── README.md
 
 ---
 
