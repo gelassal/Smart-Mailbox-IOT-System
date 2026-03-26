@@ -195,13 +195,14 @@ Email Alerts
 
 ## Repository Structure
 
-smart-mailbox/
-├── frontend/
-├── tm4c_firmware/
-├── pi_server/
-├── pi_detection/
-├── docs/
-└── README.md
+| Folder | Description |
+|--------|------------|
+| frontend/ | React web application |
+| tm4c_firmware/ | Embedded firmware (TM4C123) |
+| pi_server/ | Backend API and video streaming |
+| pi_detection/ | Object detection and email alerts |
+| docs/ | Report and documentation |
+| README.md | Project overview |
 
 ---
 
