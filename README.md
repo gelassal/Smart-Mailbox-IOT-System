@@ -1,21 +1,83 @@
 Smart Mailbox: Secure IoT Package Protection System
+
+Developed a distributed embedded and full-stack system to secure package deliveries using microcontroller-based locking, remote web control, live video streaming, and real-time human detection.
+
 Overview
 
-Package theft (“porch piracy”) has become a widespread issue, with billions of dollars in losses annually. The Smart Mailbox is an end-to-end embedded and distributed system designed to secure package deliveries through physical locking, remote access, live monitoring, and intelligent detection.
+This project implements a Smart Mailbox system designed to prevent package theft through a combination of embedded control, cloud-connected interfaces, and computer vision.
 
-This project integrates embedded systems, full-stack web development, real-time communication, and computer vision to create a secure and user-friendly solution for protecting delivered packages.
+The system integrates a microcontroller, multiple Raspberry Pi subsystems, and a web application to provide secure physical access, remote monitoring, and automated alerts.
+
+Motivation
+
+Package theft (“porch piracy”) is a widespread and costly problem, yet most existing solutions are limited:
+
+Passive (cameras without action)
+Not integrated with physical locking systems
+Lack real-time response or remote control
+
+This project addresses these limitations by combining physical security + remote access + intelligent detection into a single system.
+
+Key Idea
+
+Instead of treating security, monitoring, and control as separate systems, we:
+
+Secure the mailbox physically using embedded control
+Enable remote interaction through a web interface
+Monitor activity using live video and detection
+Trigger alerts when suspicious behavior is detected
+
+The result is a fully integrated, real-time IoT security system.
 
 System Architecture
 
-The Smart Mailbox is composed of multiple interacting subsystems:
+The system is composed of four main components:
 
-TM4C123 Microcontroller: Handles physical lock control, keypad input, and sensor logic
-Raspberry Pi 4 (Backend + Streaming): Acts as a server, bridges communication, and streams live video
-Raspberry Pi 5 (Detection System): Performs real-time human detection and triggers alerts
-Web Application (React + AWS): Provides remote access, monitoring, and control
+TM4C123 Microcontroller
+Controls lock mechanism, keypad input, and sensors
+Raspberry Pi 4 (Backend + Streaming)
+Hosts API server and manages UART communication
+Streams live video feed
+Raspberry Pi 5 (Detection System)
+Performs real-time human detection
+Sends email alerts with captured images
+Web Application (React + AWS)
+Provides user interface for control and monitoring
+System Pipeline
+1. User Interaction (Frontend)
+User accesses web application
+Can:
+Lock/unlock mailbox
+View system status
+Watch live video feed
+2. Backend Communication (Pi 4)
+Flask server receives HTTP requests
+Converts commands into UART signals
+Sends control messages to TM4C
+3. Embedded Control (TM4C123)
+Processes UART commands
+Controls:
+Servo motor (lock mechanism)
+Keypad authentication
+Ultrasonic sensor (safety check)
+Ensures mailbox is closed before locking
+4. Live Streaming (Pi 4)
+Captures video using camera module
+Streams via FFmpeg to YouTube
+Embedded into web interface
+5. Detection and Alerts (Pi 5)
+Captures frames using Pi camera
+Runs object detection (MobileNet SSD via OpenCV)
+Detects presence of a person
+
+If detected:
+
+Saves image
+Sends email notification with attachment
+Uses cooldown to prevent spam
 Communication Flow
-Frontend (React Web App)
-        ↓ HTTP (ngrok / AWS)
+Frontend (React)
+        ↓ HTTP
 Raspberry Pi 4 (Flask Backend)
         ↓ UART
 TM4C123 Microcontroller
@@ -24,92 +86,83 @@ Servo Lock + Sensors
 
 Raspberry Pi 5 (Detection)
         ↓
-Email Alerts (with image)
+Email Alerts
 Key Features
-Secure Locking Mechanism
-Servo-driven sliding lock controlled by TM4C123
-Lock/unlock via keypad or remote web interface
-Remote Web Control
-Lock/unlock mailbox from anywhere
-View system status and logs
-Live Video Streaming
-Real-time camera feed streamed via FFmpeg to YouTube
-Embedded into web interface
-Human Detection and Alerts
-Computer vision model detects nearby individuals
-Automatically captures image and sends email notification
-Keypad Authentication
-Matrix keypad scanning using row/column logic
-Secure passcode-based access
-Safety Mechanism
-Ultrasonic sensor ensures lid is closed before locking
-Backup Access
-Physical key override in case of power failure
+Remote lock/unlock via web interface
+Keypad-based local authentication
+Live video streaming integrated into UI
+Real-time human detection with email alerts
+Safety mechanism using ultrasonic sensor
+Distributed system across multiple devices
+Physical key override for reliability
+Design Highlights
+Built a distributed IoT architecture across microcontroller and multiple compute nodes
+Integrated hardware control with web-based interfaces
+Implemented real-time UART communication pipeline
+Designed event-driven system behavior across subsystems
+Combined embedded systems + backend + computer vision in one platform
+Challenges
+Synchronizing communication across distributed components
+Maintaining reliable UART communication between Pi and TM4C
+Ensuring stable video streaming under network constraints
+Managing power and hardware reliability across devices
+Integrating real-time detection without excessive latency
+Key Insights
+System integration is often harder than individual components
+Real-time hardware/software interaction introduces non-trivial edge cases
+Simpler models (e.g., MobileNet SSD) are effective for embedded detection
+Reliability (power, communication) is critical in physical systems
+Clear separation of system components improves debugging and scalability
+Future Work
+Mobile application for improved accessibility
+Multi-user authentication and permissions
+Edge optimization for faster detection
+Battery and power management improvements
+Cloud-based logging and analytics
 Tech Stack
+
 Embedded Systems
-C (TM4C123 microcontroller)
-UART communication
-PWM (servo control)
-Interrupts and timers
-Backend / Systems
+
+C (TM4C123)
+UART, PWM, interrupts, timers
+
+Backend
+
 Python (Flask)
 Serial communication (pyserial)
-Ngrok (tunneling)
-AWS Elastic Beanstalk (deployment)
+Ngrok / AWS
+
 Frontend
+
 React (JavaScript)
-REST API communication
+REST APIs
+
 Computer Vision
-OpenCV (DNN module)
+
+OpenCV (DNN)
 MobileNet SSD (COCO dataset)
-Raspberry Pi Camera Module
+
 Streaming
+
 libcamera
 FFmpeg
 YouTube RTMP
 Repository Structure
 smart-mailbox/
-│
-├── frontend/              # React web application
-│
-├── tm4c_firmware/        # Embedded firmware (C)
-│
-├── pi_server/            # Raspberry Pi 4 backend + streaming
-│   ├── server.py
-│   └── stream_to_youtube.py
-│
-├── pi_detection/         # Raspberry Pi 5 detection system
-│   └── object_detection_email.py
-│
-├── docs/                 # Report, presentation, etc.
-│
+├── frontend/
+├── tm4c_firmware/
+├── pi_server/
+├── pi_detection/
+├── docs/
 └── README.md
 Demo
 
 (Add your videos here)
 
-## Demo Videos
-- Full System Demo: YOUR_LINK_HERE
-- Detection and Alerts Demo: YOUR_LINK_HERE
-
-
-Design Highlights
-Designed a distributed IoT system combining embedded firmware, backend services, and machine learning-based detection
-Implemented real-time UART communication between Raspberry Pi and microcontroller
-Built a full-stack application integrating hardware control with a web interface
-Engineered event-driven system behavior for lock control, detection alerts, and streaming
-Balanced hardware constraints, network latency, and real-time system requirements
-Challenges
-Ensuring stable power delivery across multiple hardware components
-Maintaining reliable network connectivity for streaming and backend communication
-Selecting compatible camera and software stack for real-time processing
-Synchronizing hardware and software interactions across distributed systems
-Future Improvements
-Mobile application integration
-Enhanced authentication (multi-user support, two-factor authentication)
-Edge-based machine learning optimization for faster detection
-Improved battery management and power efficiency
-Cloud-based logging and analytics
+- Full System Demo: <link>
+- Detection Demo: <link>
 Summary
 
-The Smart Mailbox demonstrates a complete embedded, full-stack, and machine learning system, combining hardware design, real-time embedded programming, backend communication, frontend development, and computer vision to solve a real-world problem at scale.
+This project demonstrates a complete system combining embedded control, distributed computing, web interfaces, and computer vision to solve a real-world security problem.
+
+It highlights the challenges and design considerations involved in building reliable, real-time, multi-component engineering systems.
