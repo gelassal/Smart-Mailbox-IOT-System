@@ -102,15 +102,15 @@ If detected:
 ---
 ## Communication Flow
 Frontend (React)
-        ↓ HTTP
+        → HTTP
 Raspberry Pi 4 (Flask Backend)
-        ↓ UART
+        → UART
 TM4C123 Microcontroller
-        ↓
+        →
 Servo Lock + Sensors
 
 Raspberry Pi 5 (Detection)
-        ↓
+        →
 Email Alerts
 
 ---
