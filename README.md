@@ -189,8 +189,8 @@ If detected:
 
 ## Demo
 
-- Full System Demo: [<link>](https://youtu.be/WmfT31LRui8)
-- Detection Demo: [<link>](https://youtu.be/29SjOkDS30s)
+- Full System Demo: https://youtu.be/WmfT31LRui8
+- Detection Demo: https://youtu.be/29SjOkDS30s
 
 ---
 
