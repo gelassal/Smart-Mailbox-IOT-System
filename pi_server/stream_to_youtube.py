@@ -2,7 +2,7 @@ import subprocess
 
 # YouTube RTMP URL and Stream Key
 youtube_rtmp_url = "rtmp://b.rtmp.youtube.com/live2?backup=1"
-youtube_stream_key = "0cem-9ca7-u5rv-hm0v-3qv8"  # Replace with your YouTube stream key
+youtube_stream_key = "INPUT YOUR STREAM KEY"  # Replace with your YouTube stream key
 
 # Function to start the libcamera-vid and ffmpeg processes for streaming to YouTube Live
 def start_libcamera_ffmpeg():
