@@ -10,9 +10,9 @@ from email import encoders
 from picamera2 import Picamera2
 
 # Email setup
-email_user = "smartlockbox1@gmail.com"
-email_password = "qwhd sofk nnkx glha"  # Use an App Password if 2FA is enabled
-email_send = "smartlockbox1@gmail.com"
+email_user = "MailboxUser@email.com"
+email_password = "MailBoxUserPassword"  # Use an App Password if 2FA is enabled
+email_send = "MailboxUser@email.com"
 
 # Function to send email notification asynchronously with an image attachment
 def send_email_notification(image_path):
